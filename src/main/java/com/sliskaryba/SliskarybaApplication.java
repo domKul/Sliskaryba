@@ -1,7 +1,9 @@
 package com.sliskaryba;
 
 import com.sliskaryba.api.Menu;
+import com.sliskaryba.dto.Hero;
 import com.sliskaryba.dto.Monster;
+import com.sliskaryba.enums.Dice;
 import com.sliskaryba.service.HeroService;
 import com.sliskaryba.service.MonsterService;
 import org.springframework.boot.SpringApplication;
@@ -34,11 +36,16 @@ public class SliskarybaApplication {
                 String playerInput = sc.nextLine().toLowerCase();
                 switch (playerInput) {
                     case "a" -> {
-                        heroService.getHeroList().forEach(System.out::println);
+                        enemyList.forEach(System.out::println);
                         continueLoop = false;
                     }
                     case "b" -> {
-                        enemyList.forEach(System.out::println);
+                        heroService.getHeroList().forEach(System.out::println);
+                        continueLoop = false;
+                    }case "c" -> {
+                        List<Hero> heroListAfterThrowingDices = throwDices(heroService.getHeroList());
+                        heroService.updateExperience(heroListAfterThrowingDices);
+                        heroListAfterThrowingDices.forEach(System.out::println);
                         continueLoop = false;
                     }
                     default -> {
@@ -49,6 +56,17 @@ public class SliskarybaApplication {
         }
 
 
+    }
+
+    static List<Hero>throwDices(List<Hero> heroList) {
+        Random random = new Random();
+        for (Hero hero : heroList) {
+            int throw1 = random.nextInt(4);
+            int throw2 = random.nextInt(4);
+            hero.setDice1(Dice.getDice(throw1));
+            hero.setDice2(Dice.getDice(throw2));
+        }
+        return heroList;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.sliskaryba.service;
 
 import com.sliskaryba.dto.Hero;
+import com.sliskaryba.enums.Dice;
 import com.sliskaryba.enums.HeroColor;
 
 import java.util.List;
@@ -26,5 +27,19 @@ public class HeroService {
 
     public void setHeroList(List<Hero> heroList) {
         this.heroList = heroList;
+    }
+
+    public List<Hero> updateExperience(List<Hero>heroList){
+         heroList.forEach(HeroService::heroExping);
+         return heroList;
+    }
+
+    private static void heroExping(Hero hero) {
+        if(hero.getDice1() == Dice.UP) {
+            hero.setExperience(hero.getExperience()+1);
+        }
+        if(hero.getDice2() == Dice.UP) {
+            hero.setExperience(hero.getExperience()+1);
+        }
     }
 }
